@@ -25,7 +25,7 @@ const AdminDashboard = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [newBook, setNewBook] = useState({ id: '', title: '', author: '' });
-  const [issueForm, setIssueForm] = useState({ bookId: '', studentName: '' });
+  const [issueForm, setIssueForm] = useState({ bookId: '', studentName: '', studentId: '', department: '' });
   const [returnId, setReturnId] = useState('');
   const [alert, setAlert] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     const err = await issueBook(issueForm.bookId, issueForm.studentName);
     if (err) showAlert(err, 'error');
-    else { showAlert(`Book issued to ${issueForm.studentName}!`, 'success'); setIssueForm({ bookId: '', studentName: '' }); loadData(); }
+    else { showAlert(`Book issued to ${issueForm.studentName}!`, 'success'); setIssueForm({ bookId: '', studentName: '', studentId: '', department: '' }); loadData(); }
   };
 
   const handleReturn = async (e: React.FormEvent) => {
@@ -190,13 +190,39 @@ const AdminDashboard = () => {
                   <label className="block text-sm font-medium text-muted-foreground mb-1.5">Book ID</label>
                   <input type="text" value={issueForm.bookId} onChange={e => setIssueForm(f => ({ ...f, bookId: e.target.value }))}
                     className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="e.g. BK-101" required />
+                    placeholder="e.g. CS001" required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-1.5">Student Name</label>
-                  <input type="text" value={issueForm.studentName} onChange={e => setIssueForm(f => ({ ...f, studentName: e.target.value }))}
+                  <select value={issueForm.studentName} onChange={e => {
+                    const name = e.target.value;
+                    const stu = students.find(s => s.name === name);
+                    setIssueForm(f => ({
+                      ...f,
+                      studentName: name,
+                      studentId: stu?.student_id || '',
+                      department: (stu as any)?.department || '',
+                    }));
+                  }}
                     className="w-full px-4 py-2.5 rounded-lg bg-secondary border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Student name" required />
+                    required>
+                    <option value="">Select a student</option>
+                    {students.map(s => (
+                      <option key={s.student_id} value={s.name}>{s.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1.5">Student ID</label>
+                  <input type="text" value={issueForm.studentId} readOnly
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary/50 border border-border text-muted-foreground cursor-not-allowed"
+                    placeholder="Auto-filled" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1.5">Department</label>
+                  <input type="text" value={issueForm.department} readOnly
+                    className="w-full px-4 py-2.5 rounded-lg bg-secondary/50 border border-border text-muted-foreground cursor-not-allowed"
+                    placeholder="Auto-filled" />
                 </div>
                 <button type="submit"
                   className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">Process Issue</button>
