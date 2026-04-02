@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 230 25% 8%;
+    --foreground: 210 40% 96%;
+
+    --card: 230 20% 12%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 230 20% 12%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 250 80% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 230 20% 18%;
+    --secondary-foreground: 210 40% 90%;
+
+    --muted: 230 15% 20%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 170 70% 50%;
+    --accent-foreground: 230 25% 8%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 150 60% 50%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 55%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 230 15% 22%;
+    --input: 230 15% 22%;
+    --ring: 250 80% 65%;
+
+    --radius: 0.75rem;
+
+    --glass-bg: 230 20% 14%;
+    --glass-border: 230 15% 25%;
+
+    --sidebar-background: 230 22% 10%;
+    --sidebar-foreground: 210 30% 80%;
+    --sidebar-primary: 250 80% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 230 20% 16%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 230 15% 20%;
+    --sidebar-ring: 250 80% 65%;
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-xl border;
+    background: hsl(var(--glass-bg) / 0.6);
+    border-color: hsl(var(--glass-border) / 0.4);
+    backdrop-filter: blur(20px);
+  }
+
+  .status-available {
+    @apply text-xs font-medium px-2.5 py-0.5 rounded-full;
+    background: hsl(var(--success) / 0.15);
+    color: hsl(var(--success));
+  }
+
+  .status-issued {
+    @apply text-xs font-medium px-2.5 py-0.5 rounded-full;
+    background: hsl(var(--warning) / 0.15);
+    color: hsl(var(--warning));
+  }
+
+  .bg-shape {
+    @apply fixed rounded-full pointer-events-none;
+    filter: blur(120px);
+    opacity: 0.15;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
