@@ -46,7 +46,7 @@ student-welcome-portal-main/
 
 1. Push this repo to GitHub
 2. Import the repo in [vercel.com](https://vercel.com)
-3. Set **Root Directory** to `student-welcome-portal-main`
+3. Set **Root Directory** to `ldbms`
 4. Set **Framework Preset** to Vite
 5. Add Supabase environment variables in Vercel → Settings → Environment Variables
 6. Click Deploy
