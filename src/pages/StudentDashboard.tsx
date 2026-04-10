@@ -13,33 +13,16 @@ const StudentDashboard = () => {
   const [user, setUser] = useState<AppUser | null>(null);
   const navigate = useNavigate();
 
-  const [studentName, setStudentName] = useState<string | null>(null);
-
   useEffect(() => {
-    getCurrentUser().then(u => {
-      setUser(u);
-      // Also fetch the student record to get the display name used in issued_to
-      if (u) {
-        import('@/integrations/supabase/client').then(({ supabase }) => {
-          supabase.from('students').select('name').eq('user_id', u.id).single()
-            .then(({ data }) => { if (data?.name) setStudentName(data.name); });
-        });
-      }
-    });
+    getCurrentUser().then(u => setUser(u));
     fetchBooks().then(b => { setBooks(b); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
   const filter = search.toLowerCase();
   const filteredBooks = books.filter(
-    b => b.title.toLowerCase().includes(filter) || b.author.toLowerCase().includes(filter)
+    b => b.title.toLowerCase().includes(filter) || b.author.toLowerCase().includes(filter) || b.book_id.toLowerCase().includes(filter)
   );
-  // issued_to stores the student's display name — match against both username and student record name
-  const myBooks = user ? books.filter(b =>
-    b.status === 'Issued' && (
-      b.issued_to === user.username ||
-      (studentName && b.issued_to === studentName)
-    )
-  ) : [];
+  const myBooks = user ? books.filter(b => b.status === 'Issued' && b.issued_to === user.username) : [];
 
   const handleLogout = async () => { await logout(); navigate('/login'); };
 
